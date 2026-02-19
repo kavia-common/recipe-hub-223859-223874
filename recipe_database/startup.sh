@@ -142,6 +142,15 @@ export POSTGRES_DB="${DB_NAME}"
 export POSTGRES_PORT="${DB_PORT}"
 EOF
 
+# Initialize application schema + seed data (idempotent)
+echo ""
+echo "Initializing application schema for Recipe Hub..."
+chmod +x ./init_app_schema.sh 2>/dev/null || true
+./init_app_schema.sh || {
+    echo "ERROR: Failed to initialize Recipe Hub schema."
+    exit 1
+}
+
 echo "PostgreSQL setup complete!"
 echo "Database: ${DB_NAME}"
 echo "User: ${DB_USER}"
